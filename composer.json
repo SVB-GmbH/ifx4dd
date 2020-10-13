@@ -1,11 +1,12 @@
 {
-    "name": "josemalonsom/ifx4dd",
+    "name": "svb/ifx4dd",
     "description": "Informix Platform for Doctrine DBAL",
     "keywords": ["informix", "doctrine", "dbal", "database", "persistence", "queryobject"],
     "homepage": "http://www.github.com/josemalonsom/ifx4dd",
     "license": "MIT",
     "authors": [
-        {"name": "Jose M. Alonso M.", "email": "josemalonsom@yahoo.es", "role": "monkey hitting keys"}
+        {"name": "Jose M. Alonso M.", "email": "josemalonsom@yahoo.es", "role": "monkey hitting keys"},
+        {"name": "Patrick Siemen", "email": "post@patrick-siemen.de", "role": "continuing project"}
     ],
     "require": {
         "ext-pdo_informix": ">=1.3.1",
