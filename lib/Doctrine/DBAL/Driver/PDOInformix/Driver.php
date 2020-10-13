@@ -108,13 +108,6 @@ class Driver extends AbstractInformixDriver
      */
     private function constructPdoDsn(array $params)
     {
-
-        if ( empty($params['dbname']) ) {
-            throw DBALException::driverException($this,
-                new \Exception("Missing 'dbname' in configuration for informix driver")
-            );
-        }
-
         if ( empty($params['host']) ) {
             throw DBALException::driverException($this,
                 new \Exception("Missing 'host' in configuration for informix driver")
@@ -136,7 +129,7 @@ class Driver extends AbstractInformixDriver
         $dsn = 'informix:'
             . 'host=' . $params['host'] . ';'
             . 'server=' . $params['server'] . ';'
-            . 'database=' . $params['dbname'] . ';'
+            . 'database=' . ($params['dbname'] ?? 'sysmaster') . ';'
             . 'protocol=' . $params['protocol'] . ';';
 
         if ( ! empty($params['port']) ) {
@@ -144,7 +137,6 @@ class Driver extends AbstractInformixDriver
         }
 
         return $dsn;
-
     }
 
     /**
