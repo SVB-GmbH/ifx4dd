@@ -21,6 +21,7 @@ namespace Doctrine\DBAL\Driver\PDOInformix;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\AbstractInformixDriver;
+use Exception;
 
 /**
  * Driver for the PDO Informix extension.
@@ -92,45 +93,41 @@ class Driver extends AbstractInformixDriver
                 $driverOptions
             );
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw DBALException::driverException($this, $e);
         }
 
     }
 
     /**
-     * Constructs the Informix PDO DSN.
-     *
-     * @param array $params
-     * @return string The DSN.
-     * @throws \Doctrine\DBAL\DBALException
+     * Constructs and returns the Informix PDO DSN.
      * @see \Doctrine\DBAL\Driver::connect
      */
     private function constructPdoDsn(array $params)
     {
         if ( empty($params['host']) ) {
-            throw DBALException::driverException($this,
-                new \Exception("Missing 'host' in configuration for informix driver")
-            );
+            throw new Exception("Missing 'host' in configuration for informix driver");
         }
 
         if ( empty($params['protocol']) ) {
-            throw DBALException::driverException($this,
-                new \Exception("Missing 'protocol' in configuration for informix driver")
-            );
+            throw new Exception("Missing 'protocol' in configuration for informix driver");
         }
 
         if ( empty($params['server']) ) {
-            throw DBALException::driverException($this,
-                new \Exception("Missing 'server' in configuration for informix driver")
-            );
+            throw new Exception("Missing 'server' in configuration for informix driver");
         }
 
         $dsn = 'informix:'
             . 'host=' . $params['host'] . ';'
-            . 'server=' . $params['server'] . ';'
-            . 'database=' . ($params['dbname'] ?? 'sysmaster') . ';'
-            . 'protocol=' . $params['protocol'] . ';';
+            . 'server=' . $params['server'] . ';';
+
+        if ( ! empty($params['dbname']) ) {
+            $dsn .= 'database=' . $params['dbname'] . ';';
+        } else {
+            $dsn .= 'CONNECTDATABASE=NO;';
+        }
+
+        $dsn .= 'protocol=' . $params['protocol'] . ';';
 
         if ( ! empty($params['port']) ) {
             $dsn .= 'service=' . $params['port'] . ';';
